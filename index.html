@@ -7,9 +7,9 @@
 <style>
   body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; padding: 0 20px; }
   h1 { text-align: center; }
-  textarea { width: 100%; height: 140px; font-family: monospace; font-size: 1.1rem; }
-  button { padding: 10px 20px; margin-top: 10px; font-size: 1rem; }
-  #results { margin-top: 20px; }
+  textarea { width: 100%; height: 160px; font-family: monospace; font-size: 1.1rem; }
+  button { padding: 10px 20px; margin-top: 10px; font-size: 1rem; margin-right: 10px; cursor: pointer; }
+  #results { margin-top: 20px; max-height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #fafafa; }
   .result-item { padding: 6px; border-bottom: 1px solid #ddd; }
   .available { color: green; font-weight: bold; }
   .taken { color: red; font-weight: bold; }
@@ -21,7 +21,7 @@
 <h1>YouTube Handle Availability Checker</h1>
 
 <label for="handlesInput">Enter handles (one per line):</label>
-<textarea id="handlesInput" placeholder="e.g. nova\nvex\nflux123"></textarea>
+<textarea id="handlesInput" placeholder="Type any handles you want to check here, or click 'Generate 100 Random Handles' to fill automatically..."></textarea>
 
 <br/>
 <button id="generateBtn">Generate 100 Random Handles (3-5 letters & numbers)</button>
@@ -34,7 +34,7 @@
 const API_KEY = 'AIzaSyBCKZtgMyyS8MwpXNNAuxRWpjhoWtJgyVU';
 const YOUTUBE_SEARCH_API = 'https://www.googleapis.com/youtube/v3/search';
 
-// Validate handle: 3-5 chars, letters or digits only
+// Validate handle: 3-5 chars, lowercase letters or digits only
 function isCleanHandle(h) {
   return /^[a-z0-9]{3,5}$/.test(h.trim());
 }
@@ -81,18 +81,22 @@ generateBtn.addEventListener('click', () => {
 });
 
 checkBtn.addEventListener('click', async () => {
-  const rawHandles = handlesInput.value.split('\n').map(h => h.trim().toLowerCase()).filter(h => h.length);
+  const rawHandles = handlesInput.value.split('\n')
+    .map(h => h.trim().toLowerCase())
+    .filter(h => h.length);
+
   if (rawHandles.length === 0) {
     alert('Please enter or generate some handles first.');
     return;
   }
+
   resultsDiv.innerHTML = '<p>Checking handles... please wait.</p>';
 
   resultsDiv.innerHTML = '';
   for (const handle of rawHandles) {
     if (!isCleanHandle(handle)) {
       const p = document.createElement('p');
-      p.textContent = `${handle} — Invalid format (only 3-5 letters/numbers allowed)`;
+      p.textContent = `${handle} — Invalid format (only 3-5 lowercase letters/numbers allowed)`;
       p.className = 'error';
       resultsDiv.appendChild(p);
       continue;
@@ -108,7 +112,7 @@ checkBtn.addEventListener('click', async () => {
     else if (status === 'TAKEN') p.classList.add('taken');
     else p.classList.add('error');
 
-    // Rate limit: pause 300ms between requests (adjust as needed)
+    // Rate limit: pause 300ms between requests (adjust if needed)
     await new Promise(r => setTimeout(r, 300));
   }
 });
