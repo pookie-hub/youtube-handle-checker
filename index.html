@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YouTube Handle Availability Checker</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; padding: 0 20px; }
+  h1 { text-align: center; }
+  textarea { width: 100%; height: 140px; font-family: monospace; font-size: 1.1rem; }
+  button { padding: 10px 20px; margin-top: 10px; font-size: 1rem; }
+  #results { margin-top: 20px; }
+  .result-item { padding: 6px; border-bottom: 1px solid #ddd; }
+  .available { color: green; font-weight: bold; }
+  .taken { color: red; font-weight: bold; }
+  .error { color: orange; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>YouTube Handle Availability Checker</h1>
+
+<label for="handlesInput">Enter handles (one per line):</label>
+<textarea id="handlesInput" placeholder="e.g. nova\nvex\nflux123"></textarea>
+
+<br/>
+<button id="generateBtn">Generate 100 Random Handles (3-5 letters & numbers)</button>
+<button id="checkBtn">Check Availability</button>
+
+<div id="results"></div>
+
+<script>
+// === CONFIG ===
+const API_KEY = 'AIzaSyBCKZtgMyyS8MwpXNNAuxRWpjhoWtJgyVU';
+const YOUTUBE_SEARCH_API = 'https://www.googleapis.com/youtube/v3/search';
+
+// Validate handle: 3-5 chars, letters or digits only
+function isCleanHandle(h) {
+  return /^[a-z0-9]{3,5}$/.test(h.trim());
+}
+
+// Generate random clean handles with letters and digits
+function generateHandles(count = 100) {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const handles = new Set();
+  while (handles.size < count) {
+    const len = Math.floor(Math.random() * 3) + 3; // 3 to 5 chars
+    let str = '';
+    for (let i = 0; i < len; i++) {
+      str += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    handles.add(str);
+  }
+  return Array.from(handles);
+}
+
+// Check handle availability with YouTube API
+async function checkHandle(handle) {
+  const q = encodeURIComponent('@' + handle);
+  const url = `${YOUTUBE_SEARCH_API}?part=snippet&type=channel&q=${q}&key=${API_KEY}&maxResults=1`;
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    return data.items && data.items.length > 0 ? 'TAKEN' : 'AVAILABLE';
+  } catch (err) {
+    return 'ERROR';
+  }
+}
+
+// UI logic
+const handlesInput = document.getElementById('handlesInput');
+const generateBtn = document.getElementById('generateBtn');
+const checkBtn = document.getElementById('checkBtn');
+const resultsDiv = document.getElementById('results');
+
+generateBtn.addEventListener('click', () => {
+  const generated = generateHandles(100);
+  handlesInput.value = generated.join('\n');
+  resultsDiv.innerHTML = '';
+});
+
+checkBtn.addEventListener('click', async () => {
+  const rawHandles = handlesInput.value.split('\n').map(h => h.trim().toLowerCase()).filter(h => h.length);
+  if (rawHandles.length === 0) {
+    alert('Please enter or generate some handles first.');
+    return;
+  }
+  resultsDiv.innerHTML = '<p>Checking handles... please wait.</p>';
+
+  resultsDiv.innerHTML = '';
+  for (const handle of rawHandles) {
+    if (!isCleanHandle(handle)) {
+      const p = document.createElement('p');
+      p.textContent = `${handle} — Invalid format (only 3-5 letters/numbers allowed)`;
+      p.className = 'error';
+      resultsDiv.appendChild(p);
+      continue;
+    }
+    const p = document.createElement('p');
+    p.textContent = `${handle} — Checking...`;
+    p.className = 'result-item';
+    resultsDiv.appendChild(p);
+
+    const status = await checkHandle(handle);
+    p.textContent = `${handle} — ${status}`;
+    if (status === 'AVAILABLE') p.classList.add('available');
+    else if (status === 'TAKEN') p.classList.add('taken');
+    else p.classList.add('error');
+
+    // Rate limit: pause 300ms between requests (adjust as needed)
+    await new Promise(r => setTimeout(r, 300));
+  }
+});
+</script>
+
+</body>
+</html>
