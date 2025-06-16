@@ -26,6 +26,7 @@
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
+      max-width: 80vw;
     }
     .handle-suggestion {
       background: #1e1e1e;
@@ -71,15 +72,16 @@
   <div id="result"></div>
 
   <script>
-    function generateRandomHandles(count = 5) {
-      const adjectives = ['cool', 'fast', 'dark', 'funny', 'crazy'];
-      const nouns = ['ninja', 'cat', 'dragon', 'pirate', 'wizard'];
+    function generateRandomHandles(count = 20) {
       const handles = [];
+      const chars = "abcdefghijklmnopqrstuvwxyz";
       for (let i = 0; i < count; i++) {
-        const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-        const noun = nouns[Math.floor(Math.random() * nouns.length)];
-        const num = Math.floor(Math.random() * 1000);
-        handles.push(`@${adj}${noun}${num}`);
+        const length = Math.floor(Math.random() * 3) + 3; // 3 to 5 characters
+        let handle = "";
+        for (let j = 0; j < length; j++) {
+          handle += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        handles.push(`@${handle}`);
       }
       return handles;
     }
