@@ -76,10 +76,15 @@
       const handles = [];
       const chars = "abcdefghijklmnopqrstuvwxyz";
       for (let i = 0; i < count; i++) {
-        const length = Math.floor(Math.random() * 3) + 3; // 3 to 5 characters
         let handle = "";
-        for (let j = 0; j < length; j++) {
-          handle += chars.charAt(Math.floor(Math.random() * chars.length));
+        const wordCount = Math.floor(Math.random() * 3) + 3; // 3 to 5 words
+        for (let w = 0; w < wordCount; w++) {
+          const length = Math.floor(Math.random() * 3) + 3; // 3 to 5 letters per word
+          let word = "";
+          for (let j = 0; j < length; j++) {
+            word += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          handle += word;
         }
         handles.push(`@${handle}`);
       }
