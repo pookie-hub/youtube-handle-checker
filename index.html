@@ -1,273 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>YouTube Handle Availability Checker</title>
-<style>
-  /* Google Fonts */
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-  /* Reset & base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #1f4037, #99f2c8);
-    color: #222;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-  }
-
-  /* Container */
-  .container {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    max-width: 720px;
-    width: 100%;
-    padding: 30px 40px;
-  }
-
-  h1 {
-    margin-top: 0;
-    margin-bottom: 24px;
-    font-weight: 600;
-    text-align: center;
-    color: #0b3d91;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
-  }
-
-  label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #333;
-  }
-
-  textarea {
-    width: 100%;
-    height: 160px;
-    padding: 14px 18px;
-    font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    border: 2px solid #0b3d91;
-    border-radius: 10px;
-    resize: vertical;
-    transition: border-color 0.3s ease;
-  }
-  textarea:focus {
-    border-color: #3b82f6;
-    outline: none;
-    box-shadow: 0 0 10px rgba(59,130,246,0.4);
-  }
-
-  .buttons {
-    margin-top: 18px;
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  button {
-    background: #0b3d91;
-    color: #fff;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 12px 28px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-    flex: 1 1 220px;
-    min-width: 180px;
-    box-shadow: 0 5px 15px rgba(11,61,145,0.4);
-  }
-  button:hover {
-    background: #3b82f6;
-    box-shadow: 0 8px 20px rgba(59,130,246,0.7);
-  }
-  button:active {
-    background: #0742a1;
-    box-shadow: 0 3px 8px rgba(7,66,161,0.6);
-  }
-
-  #results {
-    margin-top: 30px;
-    max-height: 400px;
-    overflow-y: auto;
-    background: #f9fafb;
-    border-radius: 14px;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
-    padding: 16px 24px;
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-
-  .result-item {
-    padding: 10px 12px;
-    border-bottom: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    transition: background-color 0.2s ease;
-    cursor: default;
-  }
-  .result-item:last-child {
-    margin-bottom: 0;
-    border-bottom: none;
-  }
-  .result-item:hover {
-    background-color: #e2f0ff;
-  }
-
-  .available {
-    color: #16a34a; /* green-600 */
-    font-weight: 700;
-  }
-  .taken {
-    color: #dc2626; /* red-600 */
-    font-weight: 700;
-  }
-  .error {
-    color: #ca8a04; /* yellow-600 */
-    font-weight: 700;
-  }
-
-  /* Scrollbar styling for results */
-  #results::-webkit-scrollbar {
-    width: 10px;
-  }
-  #results::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 12px;
-  }
-  #results::-webkit-scrollbar-thumb {
-    background: #0b3d91;
-    border-radius: 12px;
-  }
-  #results::-webkit-scrollbar-thumb:hover {
-    background: #3b82f6;
-  }
-
-  /* Responsive tweaks */
-  @media (max-width: 500px) {
-    button {
-      flex: 1 1 100%;
-      min-width: auto;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YouTube Handle Checker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1f1f1f, #111);
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
-  }
-</style>
+    .container {
+      background: #2a2a2a;
+      padding: 2rem 3rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #000;
+      text-align: center;
+      width: 400px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .handle {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+    }
+    button {
+      background: #ff0000;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .available {
+      color: #00ff6a;
+    }
+    .unavailable {
+      color: #ff4a4a;
+    }
+  </style>
 </head>
 <body>
-
-<div class="container">
-  <h1>YouTube Handle Availability Checker</h1>
-
-  <label for="handlesInput">Enter handles (one per line):</label>
-  <textarea id="handlesInput" placeholder="Type any handles you want to check here, or click 'Generate 100 Random Handles' to fill automatically..."></textarea>
-
-  <div class="buttons">
-    <button id="generateBtn">Generate 100 Random Handles (3-5 letters & numbers)</button>
-    <button id="checkBtn">Check Availability</button>
+  <div class="container">
+    <h1>YouTube Handle Checker</h1>
+    <div class="handle" id="handle">@abc</div>
+    <button onclick="generateAndCheck()">Generate & Check</button>
+    <div class="result" id="result"></div>
   </div>
 
-  <div id="results"></div>
-</div>
+  <script>
+    const apiKey = "AIzaSyCWqe3pafMwutRI14EmVT0eqf02Cv-GagU";
 
-<script>
-// === CONFIG ===
-const API_KEY = 'AIzaSyBCKZtgMyyS8MwpXNNAuxRWpjhoWtJgyVU';
-const YOUTUBE_SEARCH_API = 'https://www.googleapis.com/youtube/v3/search';
-
-// Validate handle: 3-5 chars, lowercase letters or digits only
-function isCleanHandle(h) {
-  return /^[a-z0-9]{3,5}$/.test(h.trim());
-}
-
-// Generate random clean handles with letters and digits
-function generateHandles(count = 100) {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  const handles = new Set();
-  while (handles.size < count) {
-    const len = Math.floor(Math.random() * 3) + 3; // 3 to 5 chars
-    let str = '';
-    for (let i = 0; i < len; i++) {
-      str += chars.charAt(Math.floor(Math.random() * chars.length));
+    function randomHandle() {
+      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      const length = Math.floor(Math.random() * 3) + 3; // 3 to 5 characters
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
     }
-    handles.add(str);
-  }
-  return Array.from(handles);
-}
 
-// Check handle availability with YouTube API
-async function checkHandle(handle) {
-  const q = encodeURIComponent('@' + handle);
-  const url = `${YOUTUBE_SEARCH_API}?part=snippet&type=channel&q=${q}&key=${API_KEY}&maxResults=1`;
-  try {
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    return data.items && data.items.length > 0 ? 'TAKEN' : 'AVAILABLE';
-  } catch (err) {
-    return 'ERROR';
-  }
-}
+    async function checkHandleAvailability(handle) {
+      try {
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${handle}&key=${apiKey}`;
+        const response = await fetch(url);
+        const data = await response.json();
 
-// UI logic
-const handlesInput = document.getElementById('handlesInput');
-const generateBtn = document.getElementById('generateBtn');
-const checkBtn = document.getElementById('checkBtn');
-const resultsDiv = document.getElementById('results');
-
-generateBtn.addEventListener('click', () => {
-  const generated = generateHandles(100);
-  handlesInput.value = generated.join('\n');
-  resultsDiv.innerHTML = '';
-});
-
-checkBtn.addEventListener('click', async () => {
-  const rawHandles = handlesInput.value.split('\n')
-    .map(h => h.trim().toLowerCase())
-    .filter(h => h.length);
-
-  if (rawHandles.length === 0) {
-    alert('Please enter or generate some handles first.');
-    return;
-  }
-
-  resultsDiv.innerHTML = '<p style="text-align:center; font-style:italic;">Checking handles... please wait.</p>';
-
-  resultsDiv.innerHTML = '';
-  for (const handle of rawHandles) {
-    if (!isCleanHandle(handle)) {
-      const p = document.createElement('p');
-      p.textContent = `${handle} — Invalid format (only 3-5 lowercase letters/numbers allowed)`;
-      p.className = 'error result-item';
-      resultsDiv.appendChild(p);
-      continue;
+        // If a channel with the exact handle is found, it's taken
+        const lowerHandle = handle.toLowerCase();
+        const match = data.items.find(item => item.snippet?.channelTitle?.toLowerCase() === `@${lowerHandle}`);
+        return !match;
+      } catch (error) {
+        console.error("API Error:", error);
+        return false; // Assume unavailable on error
+      }
     }
-    const p = document.createElement('p');
-    p.textContent = `${handle} — Checking...`;
-    p.className = 'result-item';
-    resultsDiv.appendChild(p);
 
-    const status = await checkHandle(handle);
-    p.textContent = `${handle} — ${status}`;
-    if (status === 'AVAILABLE') p.classList.add('available');
-    else if (status === 'TAKEN') p.classList.add('taken');
-    else p.classList.add('error');
+    async function generateAndCheck() {
+      const handle = randomHandle();
+      const handleDisplay = document.getElementById('handle');
+      const resultDisplay = document.getElementById('result');
 
-    // Rate limit: pause 300ms between requests (adjust if needed)
-    await new Promise(r => setTimeout(r, 300));
-  }
-});
-</script>
+      handleDisplay.textContent = '@' + handle;
+      resultDisplay.textContent = 'Checking...';
+      resultDisplay.className = 'result';
 
+      const available = await checkHandleAvailability(handle);
+
+      if (available) {
+        resultDisplay.textContent = '✅ Available!';
+        resultDisplay.classList.add('available');
+      } else {
+        resultDisplay.textContent = '❌ Unavailable';
+        resultDisplay.classList.add('unavailable');
+      }
+    }
+
+    generateAndCheck();
+  </script>
 </body>
 </html>
