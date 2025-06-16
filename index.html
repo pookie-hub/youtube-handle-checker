@@ -54,6 +54,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin: 5px;
     }
     button:hover {
       background-color: #cc0000;
@@ -66,6 +67,7 @@
 </head>
 <body>
   <h1>YouTube Handle Checker</h1>
+  <button onclick="displayRandomHandles()">🔁 Generate 20 Random Handles</button>
   <div class="random-handles" id="randomHandles"></div>
   <input type="text" id="handleInput" placeholder="Enter YouTube Handle (e.g., @mychannel)" />
   <button onclick="checkHandle()">Check Availability</button>
