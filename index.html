@@ -1,153 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YouTube Handle Checker</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    h1 {
-      color: #ff0000;
-    }
-    .random-handles {
-      margin-bottom: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      max-width: 80vw;
-    }
-    .handle-suggestion {
-      background: #1e1e1e;
-      padding: 6px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      border: 1px solid #ff0000;
-    }
-    .handle-suggestion:hover {
-      background: #2a2a2a;
-    }
-    input {
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px;
-      width: 300px;
-      border-radius: 5px;
-      border: none;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #ff0000;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-    }
-    button:hover {
-      background-color: #cc0000;
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-  <h1>YouTube Handle Checker</h1>
-  <button onclick="displayRandomHandles()">🔁 Generate 20 Random Handles</button>
-  <div class="random-handles" id="randomHandles"></div>
-  <input type="text" id="handleInput" placeholder="Enter YouTube Handle (e.g., @mychannel)" />
-  <button onclick="checkHandle()">Check Availability</button>
-  <div id="result"></div>
-
-  <script>
-    function generateRandomHandles(count = 20) {
-      const handles = [];
-      const chars = "abcdefghijklmnopqrstuvwxyz";
-      for (let i = 0; i < count; i++) {
-        let handle = "";
-        const wordCount = Math.floor(Math.random() * 3) + 3; // 3 to 5 words
-        for (let w = 0; w < wordCount; w++) {
-          const length = Math.floor(Math.random() * 3) + 3; // 3 to 5 letters per word
-          let word = "";
-          for (let j = 0; j < length; j++) {
-            word += chars.charAt(Math.floor(Math.random() * chars.length));
-          }
-          handle += word;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnitedPath Foundation - Mental Health Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #0d9488 0%, #0891b2 50%, #0369a1 100%);
         }
-        handles.push(`@${handle}`);
-      }
-      return handles;
-    }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        .wave-shape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        .wave-shape svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 100px;
+        }
+        .wave-shape .shape-fill {
+            fill: #FFFFFF;
+        }
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800">
+    <!-- Header/Navigation -->
+    <header class="fixed w-full bg-white shadow-sm z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center mr-3">
+                    <i class="fas fa-hands-helping text-white text-xl"></i>
+                </div>
+                <a href="#" class="text-2xl font-bold text-teal-600">UnitedPath</a>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="text-teal-600 font-medium hover:text-teal-800 transition-all">Home</a>
+                <a href="#about" class="text-gray-600 hover:text-teal-600 transition-all">About</a>
+                <a href="#resources" class="text-gray-600 hover:text-teal-600 transition-all">Resources</a>
+                <a href="#stories" class="text-gray-600 hover:text-teal-600 transition-all">Stories</a>
+                <a href="#contact" class="text-gray-600 hover:text-teal-600 transition-all">Contact</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <a href="#" class="hidden md:block px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-all">Donate</a>
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-4 px-4 shadow-lg">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="text-indigo-600 font-medium hover:text-indigo-800 transition-all">Home</a>
+                <a href="#about" class="text-gray-600 hover:text-indigo-600 transition-all">About</a>
+                <a href="#resources" class="text-gray-600 hover:text-indigo-600 transition-all">Resources</a>
+                <a href="#stories" class="text-gray-600 hover:text-indigo-600 transition-all">Stories</a>
+                <a href="#contact" class="text-gray-600 hover:text-indigo-600 transition-all">Contact</a>
+                <a href="#" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-all text-center">Donate</a>
+            </div>
+        </div>
+    </header>
 
-    function displayRandomHandles() {
-      const container = document.getElementById("randomHandles");
-      container.innerHTML = "";
-      const handles = generateRandomHandles();
-      handles.forEach(h => {
-        const div = document.createElement("div");
-        div.className = "handle-suggestion";
-        div.textContent = h;
-        div.onclick = () => {
-          document.getElementById("handleInput").value = h;
-        };
-        container.appendChild(div);
-      });
-    }
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient pt-32 pb-20 relative overflow-hidden">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Breaking the Stigma Around Mental Health</h1>
+                <p class="text-xl text-indigo-100 mb-8">UnitedPath Foundation is dedicated to raising awareness, providing support, and creating safe spaces for mental wellness.</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="#resources" class="px-6 py-3 bg-white text-teal-600 font-medium rounded-md hover:bg-gray-100 transition-all text-center">Explore Resources</a>
+                    <a href="#about" class="px-6 py-3 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-teal-600 transition-all text-center">Learn More</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce80073?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="People supporting each other" class="rounded-lg shadow-2xl max-w-md w-full">
+            </div>
+        </div>
+       
+            </svg>
+        </div>
+    </section>
 
-    async function checkHandle() {
-      const input = document.getElementById("handleInput").value.trim();
-      const handle = input.startsWith("@") ? input.slice(1) : input;
-      const result = document.getElementById("result");
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Mission</h2>
+                <div class="w-20 h-1 bg-teal-600 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">UnitedPath Foundation is a nonprofit dedicated to raising awareness about mental health, breaking the stigma, and providing support and resources for individuals struggling with mental health challenges.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-lg transition-all card-hover">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-brain text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Awareness</h3>
+                    <p class="text-gray-600">We educate communities about mental health issues to foster understanding and compassion.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-lg transition-all card-hover">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-heart text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Support</h3>
+                    <p class="text-gray-600">We provide safe spaces and resources for individuals to seek help without judgment.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-lg transition-all card-hover">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-hands-helping text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Community</h3>
+                    <p class="text-gray-600">We connect people with shared experiences to build a supportive network.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      if (!handle) {
-        result.textContent = "Please enter a handle.";
-        return;
-      }
+    <!-- Stats Section -->
+    <section class="py-16 bg-teal-50">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-indigo-600 mb-2">1 in 5</div>
+                    <div class="text-gray-600">Adults experience mental illness each year</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-indigo-600 mb-2">50%</div>
+                    <div class="text-gray-600">Of mental health conditions begin by age 14</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-indigo-600 mb-2">60%</div>
+                    <div class="text-gray-600">Don't receive treatment due to stigma</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-indigo-600 mb-2">10M</div>
+                    <div class="text-gray-600">People we've reached through our programs</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      result.textContent = "Checking...";
+    <!-- Resources Section -->
+    <section id="resources" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Resources & Support</h2>
+                <div class="w-20 h-1 bg-teal-600 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Access our free resources designed to support your mental health journey.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Therapy session" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Find a Therapist</h3>
+                        <p class="text-gray-600 mb-4">Connect with licensed mental health professionals in your area.</p>
+                        <a href="#" class="text-indigo-600 font-medium hover:text-indigo-800 transition-all">Search Directory <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <img src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Support group" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Support Groups</h3>
+                        <p class="text-gray-600 mb-4">Join our virtual and in-person support groups for various mental health needs.</p>
+                        <a href="#" class="text-indigo-600 font-medium hover:text-indigo-800 transition-all">View Schedule <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all card-hover">
+                    <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Educational materials" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Educational Materials</h3>
+                        <p class="text-gray-600 mb-4">Download our free guides, worksheets, and mental health toolkits.</p>
+                        <a href="#" class="text-indigo-600 font-medium hover:text-indigo-800 transition-all">Browse Library <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-all inline-block">View All Resources</a>
+            </div>
+        </div>
+    </section>
 
-      try {
-        const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&forHandle=${handle}&key=AIzaSyCWqe3pafMwutRI14EmVT0eqf02Cv-GagU`;
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json'
-          }
+    <!-- Stories Section -->
+    <section id="stories" class="py-20 bg-gray-50 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Stories of Hope</h2>
+                <div class="w-20 h-1 bg-indigo-600 mx-auto mb-6"></div>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Real stories from people who have found strength and support through UnitedPath.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="testimonial-card p-8 rounded-xl shadow-md transition-all card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Sarah K.</h4>
+                            <p class="text-gray-600 text-sm">Anxiety Support Group</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"UnitedPath gave me the tools and community I needed to manage my anxiety. The support group made me realize I wasn't alone in this journey."</p>
+                    <div class="mt-4 text-indigo-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card p-8 rounded-xl shadow-md transition-all card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Michael T.</h4>
+                            <p class="text-gray-600 text-sm">Depression Resources</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"The educational materials helped me understand what I was experiencing wasn't my fault. It gave me the courage to seek professional help."</p>
+                    <div class="mt-4 text-indigo-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card p-8 rounded-xl shadow-md transition-all card-hover">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-indigo-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Jamie L.</h4>
+                            <p class="text-gray-600 text-sm">Parent Support Network</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"As a parent of a child with mental health challenges, UnitedPath connected me with others who understood our struggles. The resources were invaluable."</p>
+                    <div class="mt-4 text-indigo-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-teal-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Join Us in Making a Difference</h2>
+            <p class="text-xl text-indigo-100 max-w-3xl mx-auto mb-8">Your support helps us continue our mission to break the stigma and provide mental health resources to those in need.</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#" class="px-6 py-3 bg-white text-indigo-600 font-medium rounded-md hover:bg-gray-100 transition-all">Donate Now</a>
+                <a href="#" class="px-6 py-3 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-indigo-600 transition-all">Volunteer</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Get In Touch</h2>
+                    <div class="w-20 h-1 bg-teal-600 mb-6"></div>
+                    <p class="text-gray-600 mb-8">Have questions or want to get involved? Reach out to our team—we'd love to hear from you.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-map-marker-alt text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Location</h4>
+                                <p class="text-gray-600">123 Wellness Way, Suite 200<br>Mental Health City, MH 12345</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-envelope text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Email</h4>
+                                <p class="text-gray-600">contact@UnitedPathFoundation.org<br>support@UnitedPathFoundation.org</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-phone-alt text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Phone</h4>
+                                <p class="text-gray-600">(123) 456-7890<br>24/7 Support Line: (123) 456-7891</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h3>
+                    <form>
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="mb-4">
+                            <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full px-6 py-3 bg-teal-600 text-white font-medium rounded-md hover:bg-teal-700 transition-all">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Stay Connected</h2>
+            <p class="text-xl text-gray-600 mb-8">Subscribe to our newsletter for mental health tips, event updates, and inspiring stories.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button type="submit" class="px-6 py-3 bg-teal-600 text-white font-medium rounded-md hover:bg-teal-700 transition-all">Subscribe</button>
+            </form>
+            
+            <p class="text-sm text-gray-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-hands-helping text-white text-xl"></i>
+                        </div>
+                        <a href="#" class="text-2xl font-bold text-white">UnitedPath</a>
+                    </div>
+                    <p class="text-gray-400">Breaking the stigma around mental health and creating safe spaces for wellness.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-all">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-all">About Us</a></li>
+                        <li><a href="#resources" class="text-gray-400 hover:text-white transition-all">Resources</a></li>
+                        <li><a href="#stories" class="text-gray-400 hover:text-white transition-all">Success Stories</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-all">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all">Find a Therapist</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all">Support Groups</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all">Educational Materials</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all">Crisis Hotlines</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all">Self-Care Tools</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-teal-600 transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-indigo-600 transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-indigo-600 transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-indigo-600 transition-all">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">Join our community for daily support and inspiration.</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 UnitedPath Foundation. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-all">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-all">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-teal-600 text-white rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Crisis Modal -->
+    <div id="crisis-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Need Immediate Help?</h3>
+                <button id="close-crisis-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="text-gray-600 mb-4">If you're in crisis or experiencing suicidal thoughts, please reach out to these resources:</p>
+            <ul class="space-y-2 mb-6">
+                <li class="flex items-start">
+                    <i class="fas fa-phone-alt text-indigo-600 mt-1 mr-2"></i>
+                    <div>
+                        <p class="font-medium">National Suicide Prevention Lifeline</p>
+                        <p class="text-gray-600">Call 988</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <i class="fas fa-comment text-teal-600 mt-1 mr-2"></i>
+                    <div>
+                        <p class="font-medium">Crisis Text Line</p>
+                        <p class="text-gray-600">Text HOME to 741741</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="flex justify-end">
+                <button id="cancel-crisis-modal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md mr-2 hover:bg-gray-300">Cancel</button>
+                <a href="tel:988" class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700">Call Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crisis Help Button -->
+    <div class="fixed bottom-4 left-4 z-40">
+        <button id="crisis-help-button" class="px-4 py-2 bg-red-600 text-white rounded-full shadow-lg flex items-center hover:bg-red-700 transition-all">
+            <i class="fas fa-exclamation-triangle mr-2"></i> Crisis Help
+        </button>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
-        const data = await response.json();
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                    
+                    // Calculate offset based on header height
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
 
-        if (data.items && data.items.length > 0) {
-          result.textContent = `❌ Handle @${handle} is taken.`;
-        } else {
-          result.textContent = `✅ Handle @${handle} is available!`;
-        }
-      } catch (error) {
-        console.error("Error during fetch:", error);
-        result.textContent = "❗ Error checking handle. Try again later.";
-      }
-    }
+        // Crisis modal
+        const crisisHelpButton = document.getElementById('crisis-help-button');
+        const crisisModal = document.getElementById('crisis-modal');
+        const closeCrisisModal = document.getElementById('close-crisis-modal');
+        const cancelCrisisModal = document.getElementById('cancel-crisis-modal');
+        
+        crisisHelpButton.addEventListener('click', () => {
+            crisisModal.classList.remove('hidden');
+        });
+        
+        closeCrisisModal.addEventListener('click', () => {
+            crisisModal.classList.add('hidden');
+        });
+        
+        cancelCrisisModal.addEventListener('click', () => {
+            crisisModal.classList.add('hidden');
+        });
+        
+        // Close modal when clicking outside
+        crisisModal.addEventListener('click', (e) => {
+            if (e.target === crisisModal) {
+                crisisModal.classList.add('hidden');
+            }
+        });
 
-    // Initialize random handles on page load
-    window.onload = displayRandomHandles;
-  </script>
+        // Form submission handling (example)
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Here you would typically send the form data to a server
+                alert('Thank you for your message! We will get back to you soon.');
+                form.reset();
+            });
+        });
+    </script>
 </body>
 </html>
